@@ -1,10 +1,17 @@
 module Types
   class MutationType < Types::BaseObject
-    # TODO: remove me
-    field :test_field, String, null: false,
-      description: "An example field added by the generator"
-    def test_field
-      "Hello World"
+    graphql_name 'Mutation'
+
+    field :create_movie, Types::MovieType, null: false do
+      argument :title, String, required: true
+      argument :description, String, required: true
+    end
+
+    def create_movie(title:, description:)
+      Movie.create(
+        title: title,
+        description: description
+      )
     end
   end
 end
