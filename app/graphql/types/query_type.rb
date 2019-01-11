@@ -1,23 +1,22 @@
 module Types
   class QueryType < Types::BaseObject
-    name 'Query'
+    graphql_name 'Query'
 
-    # Add root-level fields here.
-    # They will be entry points for queries on your schema.
-    field :allMovies do
-      type types[Types::MovieType]
+    field :all_movies, [Types::MovieType, null: true], null: false do
       description 'All movies'
-
-      resolve-> (obj, args, ctx) {
-        Movie.all
-      }
     end
 
-    field :movie do
-      type Types::MovieType
+    field :movie, Types::MovieType, null: false do
       description 'A movie'
-      argument :id, !types.ID
-      resolve-> (obj, args, ctx) { Movie.find(args[:id]) }
+      argument :id, ID, required: true
+    end
+
+    def movie(id:)
+      Movie.find(id)
+    end
+
+    def all_movies
+      Movie.all
     end
   end
 end
