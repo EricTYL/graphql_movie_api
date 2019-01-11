@@ -5,5 +5,10 @@ module Types
     field :id, ID, null: false
     field :title, String, null: false
     field :description, String, null: false
+    field :reviews, [Types::ReviewType], null: true
+
+    def reviews
+      object.reviews
+    end
   end
 end
